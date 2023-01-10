@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Platform } from 'react-native'
 import Colors from '../../constants/colors'
 
 interface Props {
@@ -19,10 +19,10 @@ const styles = StyleSheet.create({
     fontFamily: 'open-sans-bold',
     color: 'white',
     textAlign: 'center',
-    borderWidth: 2,
-    borderColor: 'white',
+    // borderWidth: Platform.OS === 'ios' ? 1 : 2,
+    borderColor: Platform.select({ ios: 'white', android: '#ccc' }),
     borderRadius: 7,
     padding: 12,
-    maxWidth: '80%'
+    maxWidth: '80%',
   },
 })

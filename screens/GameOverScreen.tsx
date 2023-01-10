@@ -1,5 +1,13 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  useWindowDimensions,
+  ScrollView,
+} from 'react-native'
 import PrimaryButton from '../components/ui/PrimaryButton'
+//@ts-ignore
 import Title from '../components/ui/Title'
 import Colors from '../constants/colors'
 
@@ -14,30 +22,48 @@ const GameOverScreen = ({
   roundsNumber,
   onStartNewGame,
 }: Props) => {
+  const { width, height } = useWindowDimensions()
 
-  
+  let imageSize = 300
+  if (width < 380) {
+    imageSize = 150
+  }
+  if (height < 400) {
+    imageSize = 80
+  }
+
+  const imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: Math.floor(imageSize / 2),
+  }
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>Game Over!</Title>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require('../assets/images/success.jpeg')}
-        />
+    <ScrollView style={styles.rootScreen}>
+      <View style={styles.rootContainer}>
+        <Title>Game Over!</Title>
+        <View style={[styles.imageContainer, imageStyle]}>
+          <Image
+            style={styles.image}
+            source={require('../assets/images/success.jpeg')}
+          />
+        </View>
+        <Text style={styles.summaryText}>
+          It took your phone{' '}
+          <Text style={styles.highlighted}>{roundsNumber}</Text> rounds to guess
+          the number <Text style={styles.highlighted}>{pickedNumber}</Text>
+        </Text>
+        <PrimaryButton onPress={onStartNewGame}>Start New Game?</PrimaryButton>
       </View>
-      <Text style={styles.summaryText}>
-        It took your phone{' '}
-        <Text style={styles.highlighted}>{roundsNumber}</Text> rounds to guess
-        the number <Text style={styles.highlighted}>{pickedNumber}</Text>
-      </Text>
-      <PrimaryButton onPress={onStartNewGame}>Start New Game?</PrimaryButton>
-    </View>
+    </ScrollView>
   )
 }
 export default GameOverScreen
 
-const deviseWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
+  rootScreen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     padding: 24,
@@ -46,9 +72,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    width: deviseWidth < 380 ? 200 : 350,
-    height: deviseWidth < 380 ? 200 : 350,
-    borderRadius: deviseWidth < 380 ? 100 : 175,
+    // width: width < 380 ? 200 : 350,
+    // height: width < 380 ? 200 : 350,
+    // borderRadius: width < 380 ? 100 : 175,
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: Colors.primary800,

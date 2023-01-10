@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import Colors from '../../constants/colors'
 type ButtonProps = {
   children: React.ReactNode
