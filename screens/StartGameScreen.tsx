@@ -1,7 +1,16 @@
 import { useState } from 'react'
-import { StyleSheet, View, TextInput, Alert } from 'react-native'
-import PrimaryButton from '../components/PrimaryButton'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Alert,
+  useWindowDimensions,
+} from 'react-native'
+import PrimaryButton from '../components/ui/PrimaryButton'
 import Colors from '../constants/colors'
+import Title from '../components/ui/Title'
+import Card from '../components/ui/Card'
 
 interface Props {
   pickedNumberHandler: (userNumber: number) => void
@@ -9,6 +18,8 @@ interface Props {
 
 const StartGameScreen = ({ pickedNumberHandler }: Props) => {
   const [enteredNumber, setEnteredNumber] = useState('')
+  const { width, height } = useWindowDimensions()
+
   function inputHandler(text: string) {
     setEnteredNumber(text)
   }
@@ -28,42 +39,47 @@ const StartGameScreen = ({ pickedNumberHandler }: Props) => {
     pickedNumberHandler(number)
   }
 
+  const marginTop = height < 450 ? 30 : 100
+
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        onChangeText={inputHandler}
-        value={enteredNumber}
-        style={styles.input}
-        maxLength={2}
-        keyboardType='number-pad'
-      />
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={resetHandler}>Cancel</PrimaryButton>
+    <View style={[styles.rootContainer, {marginTop}]}>
+      <Title>Guess My Number</Title>
+      <Card>
+        <Text style={styles.instructionText}>Enter a number</Text>
+        <TextInput
+          onChangeText={inputHandler}
+          value={enteredNumber}
+          style={styles.input}
+          maxLength={2}
+          keyboardType='number-pad'
+        />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={resetHandler}>Cancel</PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={submitHandler}>Confirm</PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={submitHandler}>Confirm</PrimaryButton>
-        </View>
-      </View>
+      </Card>
     </View>
   )
 }
 export default StartGameScreen
+
+// const deviseHeight = Dimensions.get('window').height
+
 const styles = StyleSheet.create({
-  inputContainer: {
-    // flex: 1,
+  rootContainer: {
+    flex: 1,
+    // marginTop: deviseHeight < 450 ? 10 : 100,
     alignItems: 'center',
-    marginHorizontal: 24,
-    marginTop: 100,
-    padding: 16,
-    backgroundColor: Colors.primary800,
-    borderRadius: 8,
-    elevation: 5,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
   },
+  instructionText: {
+    color: Colors.primary500,
+    fontSize: 36,
+  },
+
   input: {
     height: 50,
     width: 50,
